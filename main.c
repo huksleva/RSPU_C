@@ -1,21 +1,30 @@
 #include<stdio.h>
 #include<math.h>
 
+double MyFun(double x) {
+    return (x * x + 3 * x - 5);
+}
+
+double fun(double x){
+    return exp()
+}
+
 int main() {
-    double x, y, r1, r2, T1, T2, W1, W2;
-    //еденицы имзерения в СИ
-    r1 = 3396000; //радиус орбиты Марса (м)
-    r2 = 6371000; //радиус орбиты Земли (м)
-    T1 = 59355072; //период обращения Марса вокруг Солнца (с)
-    T2 = 31536000; //период обращения Земли вокруг Солнца (с)
-    W1 = 2*M_PI/T1;
-    W2 = 2*M_PI/T2;
-    //
-    for (int t = 0; t < 10; t++){
-        x = ((r1 * cos(W1*t)) - (r2 * cos(W2*t)));
-        y = ((r1 * sin(W1*t)) - (r2 * sin(W2*t)));
-        printf("t=%d x=%.5lf y=%.5lf\n", t, x, y);
+    double a, b, n, h, sum;
+    a = 5;
+    b = 8;
+    n = 10;
+    h = (b - a) / n;
+    sum = 0.0;
+    for (int i = 1; i <= n; i++) {
+        sum += ((MyFun(a + h * i) - MyFun(a + h * (i - 1))) / 2 * (a + h * i - a + h * (i - 1)));
     }
+    printf("MyFun: %lf", sum);
+
+    sum = 0.0;
+
+
+
 
     return 0;
 }
