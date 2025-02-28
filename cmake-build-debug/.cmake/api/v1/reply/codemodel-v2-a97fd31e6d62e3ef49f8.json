@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Leo/\u043f\u0440\u043e\u0435\u043a\u0442\u044b/RSPU_C/cmake-build-debug",
-		"source" : "C:/Leo/\u043f\u0440\u043e\u0435\u043a\u0442\u044b/RSPU_C"
+		"build" : "C:/Leo/projects/RSPU_C/cmake-build-debug",
+		"source" : "C:/Leo/projects/RSPU_C"
 	},
 	"version" : 
 	{

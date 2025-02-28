@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Leo/\u043f\u0440\u043e\u0435\u043a\u0442\u044b/RSPU_C/cmake-build-debug"
+			"value" : "c:/Leo/projects/RSPU_C/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -431,7 +431,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Leo/\u043f\u0440\u043e\u0435\u043a\u0442\u044b/RSPU_C/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Leo/projects/RSPU_C/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -503,7 +503,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Leo/\u043f\u0440\u043e\u0435\u043a\u0442\u044b/RSPU_C"
+			"value" : "C:/Leo/projects/RSPU_C"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1135,7 +1135,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Leo/\u043f\u0440\u043e\u0435\u043a\u0442\u044b/RSPU_C/cmake-build-debug"
+			"value" : "C:/Leo/projects/RSPU_C/cmake-build-debug"
 		},
 		{
 			"name" : "RSPU_C_IS_TOP_LEVEL",
@@ -1159,7 +1159,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Leo/\u043f\u0440\u043e\u0435\u043a\u0442\u044b/RSPU_C"
+			"value" : "C:/Leo/projects/RSPU_C"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",
