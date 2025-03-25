@@ -3,6 +3,12 @@
 #include <math.h>
 
 typedef struct Vec{
+    Vec(int, int, int, char*){
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->name = name;
+    }
     int x;
     int y;
     int z;
@@ -31,14 +37,8 @@ void PrintVector(Vector vec1){
 }
 
 int main() {
-    Vector v = {1,2,3, "MyName"};
-    PrintVector(v);
-    printf("ModuleVector: %f\n", ModuleVector(v));
-    printf("ScalarVectorMultiplication: %d\n", scalarVectorMultiplication(v, v));
+    Vector vec;
 
-    Vector *result = VectorMultiplication(v, v);
-    printf("VectorMultiplication: %d %d %d\n", result->x, result->y, result->z);
-    free(result);
 
     return 0;
 }
