@@ -1,44 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <string.h>
+#include <locale.h>
+#include <ctype.h>
 
-typedef struct Vec{
-    Vec(int, int, int, char*){
-        this->x = x;
-        this->y = y;
-        this->z = z;
-        this->name = name;
-    }
-    int x;
-    int y;
-    int z;
-    char* name;
-} Vector;
-
-int scalarVectorMultiplication(Vector vec1, Vector vec2){
-    return ((vec1.x * vec2.x) + (vec1.y * vec2.y) + (vec1.z * vec2.z));
-}
-
-Vector* VectorMultiplication(Vector vec1, Vector vec2){
-    //после завершения работы функции переменная result удалится из оперативки
-    Vector* result = (Vector*) malloc(sizeof(Vector));
-    result->x = (vec1.y* vec2.z) - (vec1.z * vec2.y);
-    result->y = -((vec1.x * vec2.z) + (vec1.z * vec2.x));
-    result->x = (vec1.x * vec2.y) + (vec1.y * vec2.x);
-    return result; //перед удалением result будет возвращен указатель
-}
-
-double ModuleVector(Vector vec1){
-    return sqrt((vec1.x * vec1.x) + (vec1.y * vec1.y) + (vec1.z * vec1.z));
-}
-
-void PrintVector(Vector vec1){
-    printf("Vector %s: %d %d %d\n", vec1.name, vec1.x, vec1.y, vec1.z);
-}
+#define SIZE 20
 
 int main() {
-    Vector vec;
+    char str[SIZE] = "Leonid Tots 2005";
 
+    for (int i = 0; i < strlen(str); i++) {
+        printf("Symbol '%c':\n", str[i]);
+        printf("   isalnum: %d\n", isalnum(str[i]));
+        printf("   isalpha: %d\n", isalpha(str[i]));
+        printf("   islower: %d\n", islower(str[i]));
+        printf("   isupper: %d\n", isupper(str[i]));
+        printf("   disdigit: %d\n", isdigit(str[i]));
+        printf("   isxdigit: %d\n", isxdigit(str[i]));
+        printf("   iscntrl: %d\n", iscntrl(str[i]));
+        printf("   isgraph: %d\n", isgraph(str[i]));
+        printf("   isspace: %d\n", isspace(str[i]));
+        printf("   isblank: %d\n", isblank(str[i]));
+        printf("   isprint: %d\n", isprint(str[i]));
+        printf("   ispunct: %d\n", ispunct(str[i]));
+    }
 
     return 0;
 }
