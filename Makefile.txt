@@ -1,0 +1,10 @@
+hello: main.c
+    gcc -o "main" main.c
+hello: AllocateMemory.h
+    gcc -o "AllocateMemory" AllocateMemory.h
+hello: MatrixOperations.h
+    gcc -o "MatrixOperations" MatrixOperations.h
+
+
+
+
