@@ -29,9 +29,13 @@ int main() {
 
     const int size = 10;
     int *arr = IntArray(size);
+
     IntArrRand(arr, size);
     printf("\n");
     ArrPrint(arr, size);
 
+    DelIntArray(arr);
+
     return 0;
 }
+
