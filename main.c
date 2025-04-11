@@ -1,40 +1,83 @@
-#ifndef MAIN_C // если НЕ определена константа MAIN_C
 #include <stdio.h>
-#include "MatrixOperations.h"
-#define MAIN_C // то определить ее
-#endif
+#include <malloc.h>
 
+typedef struct StackElement {
+    struct StackElement *prev;
+    char data;
+} StackElement;
+
+typedef struct Stack {
+    StackElement *head;
+} Stack;
+
+void StackInit(Stack *stack) {
+    stack->head = NULL;
+}
+
+// Добавление элемента в стек
+void push(Stack *stack, const char data) {
+    StackElement *element = (StackElement *) malloc(sizeof(StackElement));
+    element->data = data;
+    element->prev = stack->head;
+    stack->head = element;
+}
+
+// Извлечения элемента из стека
+char pop(Stack *stack) {
+    if (stack->head == NULL) {
+        printf("Stack is empty.\n");
+        return 0;
+    }
+    const char data = stack->head->data;
+    StackElement *st = stack->head;
+    stack->head = stack->head->prev;
+    free(st);
+    return data;
+}
 
 int main() {
+    printf("Enter the string with round, square and figure brackets:");
+    Stack stack;
+    StackInit(&stack);
+    push(&stack, (char) getchar());
 
-    const int col1 = 3, row1 = 3;
-    int** matrix1 = IntMatrix(col1, row1);
-    IntMatRand(matrix1, col1, row1);
-    printf("Matrix1:\n");
-    MatPrint(matrix1, col1, row1);
+    while (stack.head->data != '\n') {
+        push(&stack, (char) getchar());
+    }
 
-    const int col2 = 3, row2 = 3;
-    int** matrix2 = IntMatrix(col2, row2);
-    IntMatRand(matrix2, col2, row2);
-    printf("\nMatrix2:\n");
-    MatPrint(matrix2, col2, row2);
+    int round_brackets = 0, figure_brackets = 0, square_brackets = 0;
+    char ch = pop(&stack); // Здесь ch всегда = '/n' (символ переноса строки, он же Enter)
 
-    printf("\nMatrix1 * Matrix2:\n");
-    int** matrix3 = MultiplyMatrix(matrix1, col1, row1, matrix2, col2, row2);
-    MatPrint(matrix3, col1, row2);
-    printf("\n");
+    while ((stack.head != NULL) && (ch != 0)) {
+        ch = pop(&stack);
 
-    DelIntMatrix(matrix1, col1);
-    DelIntMatrix(matrix2, col2);
+        // Проверка на круглые скобки
+        if (ch == '(') {
+            round_brackets++;
+        } else if (ch == ')') {
+            round_brackets--;
+        }
 
-    const int size = 10;
-    int *arr = IntArray(size);
+        // Проверка на фигурные скобки
+        if (ch == '{') {
+            figure_brackets++;
+        } else if (ch == '}') {
+            figure_brackets--;
+        }
 
-    IntArrRand(arr, size);
-    printf("\n");
-    ArrPrint(arr, size);
+        // Проверка на квадратные скобки
+        if (ch == '[') {
+            square_brackets++;
+        } else if (ch == ']') {
+            square_brackets--;
+        }
+    }
 
-    DelIntArray(arr);
+    if ((round_brackets == 0) && (figure_brackets == 0) && (square_brackets == 0)) {
+        printf("YES\n");
+    } else {
+        printf("NO\n");
+    }
 
     return 0;
 }
