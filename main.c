@@ -26,7 +26,7 @@ void push(Stack *stack, const char data) {
 char pop(Stack *stack) {
     if (stack->head == NULL) {
         printf("Stack is empty.\n");
-        return 0;
+        return 0; // В ASCII 0 обозначает NULL
     }
     const char data = stack->head->data;
     StackElement *st = stack->head;
