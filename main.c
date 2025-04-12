@@ -1,84 +1,61 @@
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 
-typedef struct StackElement {
-    struct StackElement *prev;
-    char data;
-} StackElement;
-
-typedef struct Stack {
-    StackElement *head;
-} Stack;
-
-void StackInit(Stack *stack) {
-    stack->head = NULL;
-}
-
-// Добавление элемента в стек
-void push(Stack *stack, const char data) {
-    StackElement *element = (StackElement *) malloc(sizeof(StackElement));
-    element->data = data;
-    element->prev = stack->head;
-    stack->head = element;
-}
-
-// Извлечения элемента из стека
-char pop(Stack *stack) {
-    if (stack->head == NULL) {
-        printf("Stack is empty.\n");
-        return 0; // В ASCII 0 обозначает NULL
+// Функция вычисления факториала
+unsigned long long factorial(const unsigned long long n) {
+    if (n == 0) {
+        return 1;
     }
-    const char data = stack->head->data;
-    StackElement *st = stack->head;
-    stack->head = stack->head->prev;
-    free(st);
-    return data;
+    unsigned long long result = 1;
+    for (unsigned long long i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+// Функция вычисления биноминального коэффициента
+unsigned long long C(const unsigned short n, const unsigned short k) {
+    return factorial(n) / (factorial(k) * factorial(n - k));
+}
+
+// Печать пробелов для красивого треугольника
+void PreSpaces(const unsigned short count) {
+    for (unsigned short i = 0; i < count; i++) {
+        printf(" ");
+    }
 }
 
 int main() {
-    printf("Enter the string with round, square and figure brackets:");
-    Stack stack;
-    StackInit(&stack);
-    push(&stack, (char) getchar());
+    printf("Enter count of strings of the Pascal triangle:");
+    unsigned short N = 0; // от 0 до 65535
+    scanf("%hd", &N);
+    printf("Pascal triangle:\n");
 
-    while (stack.head->data != '\n') {
-        push(&stack, (char) getchar());
-    }
+    // Динамически выделяем память под массив, в котором будем хранить треугольник Паскаля
+    unsigned long long** triangle = (unsigned long long**) malloc(N * sizeof(unsigned long long*));
+    for (unsigned short i = 0; i < N; i++) {
+        triangle[i] = (unsigned long long*) malloc((i + 1) * sizeof(unsigned long long));
 
-    int round_brackets = 0, figure_brackets = 0, square_brackets = 0;
-    char ch = pop(&stack); // Здесь ch всегда = '/n' (символ переноса строки, он же Enter)
-
-    while ((stack.head != NULL) && (ch != 0)) {
-        ch = pop(&stack);
-
-        // Проверка на круглые скобки
-        if (ch == '(') {
-            round_brackets++;
-        } else if (ch == ')') {
-            round_brackets--;
-        }
-
-        // Проверка на фигурные скобки
-        if (ch == '{') {
-            figure_brackets++;
-        } else if (ch == '}') {
-            figure_brackets--;
-        }
-
-        // Проверка на квадратные скобки
-        if (ch == '[') {
-            square_brackets++;
-        } else if (ch == ']') {
-            square_brackets--;
+        // Используем бином Ньютона, чтобы построить треугольник Паскаля
+        for (unsigned short k = 0; k <= i; k++) {
+            triangle[i][k] = C(i, k);
         }
     }
 
-    if ((round_brackets == 0) && (figure_brackets == 0) && (square_brackets == 0)) {
-        printf("YES\n");
-    } else {
-        printf("NO\n");
+    // Печатаем треугольник
+    for (unsigned short i = 0; i < N; i++) {
+        PreSpaces(N - i);
+        for (unsigned short k = 0; k <= i; k++) {
+            printf("%llu ", triangle[i][k]);
+        }
+        printf("\n");
     }
+
+    // Освобождаем память
+    for (unsigned short i = 0; i < N; i++) {
+        free(triangle[i]);
+    }
+    free(triangle);
 
     return 0;
 }
-
