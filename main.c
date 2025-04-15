@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <malloc.h>
-#include <string.h>
-#define SIZE 100
 
 typedef struct StackElement {
     struct StackElement *next;
     struct StackElement *prev;
-    char data;
+    int data;
 } StackElement;
 
 typedef struct Stack {
@@ -22,7 +20,7 @@ void StackInit(Stack *stack) {
 }
 
 // Добавление элемента в стек
-void push(Stack *stack, const char data) {
+void push(Stack *stack, const int data) {
     if (stack == NULL) {
         printf("Stack is empty.\n");
         return;
@@ -40,13 +38,13 @@ void push(Stack *stack, const char data) {
 }
 
 // Извлечения элемента из стека
-char pop(Stack *stack) {
+int pop(Stack *stack) {
     if (stack == NULL || stack->head == NULL) {
         printf("Stack is empty.\n");
         return 0; // В ASCII 0 обозначает NULL
     }
 
-    const char data = stack->head->data;
+    const int data = stack->head->data;
 
     // Если стек состоит из одного элемента
     if (stack->head->prev == NULL) {
@@ -65,8 +63,10 @@ int main() {
     printf("Enter a math example in the form of postfix notation.\nOperands and operations must be written with a space (no more than 100 symbols).\n");
     printf("Example: 2 3 + 4 * 5 -\n>>");
 
+    // В стеке будут лежать только числа
     Stack *stack = (Stack*) malloc(sizeof(Stack));
     StackInit(stack);
+
 
     // Читаем по одному числу
 
@@ -80,7 +80,7 @@ int main() {
 
 
 
-    free(str);
+
     free(stack);
 
     return 0;
