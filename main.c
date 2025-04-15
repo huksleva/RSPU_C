@@ -1,61 +1,183 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
 
-// Функция вычисления факториала
-unsigned long long factorial(const unsigned long long n) {
-    if (n == 0) {
-        return 1;
+typedef struct StackElement {
+    struct StackElement *next;
+    struct StackElement *prev;
+    int data;
+} StackElement;
+
+typedef struct Stack {
+    StackElement *head;
+} Stack;
+
+void StackInit(Stack *stack) {
+    if (stack == NULL) {
+        printf("Stack is empty.\n");
+        return;
     }
-    unsigned long long result = 1;
-    for (unsigned long long i = 1; i <= n; i++) {
-        result *= i;
-    }
-    return result;
+    stack->head = NULL;
 }
 
-// Функция вычисления биноминального коэффициента
-unsigned long long C(const unsigned short n, const unsigned short k) {
-    return factorial(n) / (factorial(k) * factorial(n - k));
+// Добавление элемента в стек
+void push(Stack *stack, const int data) {
+    if (stack == NULL) {
+        printf("Stack is empty.\n");
+        return;
+    }
+    StackElement *stack_element = (StackElement *) malloc(sizeof(StackElement));
+    stack_element->data = data;
+    stack_element->prev = stack->head;
+
+    if (stack->head != NULL) {
+        stack_element->prev->next = stack_element;
+    }
+
+    stack->head = stack_element;
+    stack_element->next = NULL;
 }
 
-// Печать пробелов для красивого треугольника
-void PreSpaces(const unsigned short count) {
-    for (unsigned short i = 0; i < count; i++) {
-        printf(" ");
+// Извлечения элемента из стека
+int pop(Stack *stack) {
+    if (stack == NULL || stack->head == NULL) {
+        printf("Stack is empty.\n");
+        return 0; // В ASCII 0 обозначает NULL
+    }
+
+    const int data = stack->head->data;
+
+    // Если стек состоит из одного элемента
+    if (stack->head->prev == NULL) {
+        stack->head = NULL;
+        return data;
+    }
+
+    stack->head = stack->head->prev;
+    stack->head->next->prev = NULL;
+    stack->head->next = NULL;
+
+
+    return data;
+}
+
+// Функция меняет местами два элемента стека
+void swap(StackElement *left, StackElement *right) {
+    // left - левый элемент
+    // right - правый элемент
+    // Если конец стека
+    if (left == NULL) {
+        return;
+    }
+
+
+    if (left->prev != NULL && right->next != NULL) {
+        right->prev = left->prev;
+        left->prev->next = right;
+
+        right->next->prev = left;
+        left->next = right->next;
+
+        left->prev = right;
+        right->next = left;
+    }
+    else if (left->prev != NULL && right->next == NULL) {
+        right->prev = left->prev;
+        left->prev->next = right;
+
+        left->prev = right;
+        right->next = left;
+
+        left->next = NULL;
+    }
+    else if (left->prev == NULL && right->next != NULL) {
+        left->prev = right;
+        right->prev = NULL;
+
+        left->next = right->next;
+        right->next->prev = left;
+
+        right->next = left;
+    }
+    else if (left->prev == NULL && right->next == NULL) {
+        left->prev = right;
+        right->next = left;
+
+        left->next = NULL;
+        right->prev = NULL;
+    }
+}
+
+void siftStackElement(Stack *stack) {
+    if (stack == NULL) {
+        printf("Stack is empty.\n");
+        return;
+    }
+
+    StackElement *left = stack->head->prev;
+    StackElement *right = stack->head;
+
+    while (left != NULL && left->data < right->data) {
+        swap(left, right); // Меняет местами два элемента
+
+        // Если менялась голова, то возвращаем её на место
+        if (stack->head == right) {
+            stack->head = left;
+        }
+
+        // Обновляем указатели. Меняем левый и правый местами, а также сдвигаем их на один элемент влево
+        StackElement *temp = left;
+        left = right;
+        right = temp;
+
+        left = left->prev;
+        right = right->prev;
     }
 }
 
 int main() {
-    printf("Enter count of strings of the Pascal triangle:");
-    unsigned short N = 0; // от 0 до 65535
-    scanf("%hd", &N);
-    printf("Pascal triangle:\n");
+    // В Windows длина пути к файлу не превышает 260 символов, поэтому _MAX_PATH = 260
+    printf("Specify the path to the file (no more than %d characters).\n>", _MAX_PATH);
+    char *path = (char*) malloc(_MAX_PATH * sizeof(char));
 
-    // Динамически выделяем память под массив, в котором будем хранить треугольник Паскаля
-    unsigned long long** triangle = (unsigned long long**) malloc(N * sizeof(unsigned long long*));
-    for (unsigned short i = 0; i < N; i++) {
-        triangle[i] = (unsigned long long*) malloc((i + 1) * sizeof(unsigned long long));
 
-        // Используем бином Ньютона, чтобы построить треугольник Паскаля
-        for (unsigned short k = 0; k <= i; k++) {
-            triangle[i][k] = C(i, k);
-        }
+    // Считываем не более 260 символов и до того момента, пока не встретим символ '\n'
+    scanf("%260[^\n]", path);
+
+
+
+    // Открываем файл
+    FILE *f = fopen(path, "r");
+
+    if (f == NULL) {
+        printf("The file does not exist.\n");
+        fclose(f);
+        free(path);
+        return 0;
     }
 
-    // Печатаем треугольник
-    for (unsigned short i = 0; i < N; i++) {
-        PreSpaces(N - i);
-        for (unsigned short k = 0; k <= i; k++) {
-            printf("%llu ", triangle[i][k]);
-        }
-        printf("\n");
+    // Создаём связный список. Им будет стек.
+    Stack *stack = (Stack *) malloc(sizeof(Stack));
+    StackInit(stack);
+
+    int num;
+
+    // Пока не конец файла
+    while (!feof(f)) {
+        fscanf(f, "%d", &num); // Считываем число
+        push(stack, num); // Добавляем его в стек
+        siftStackElement(stack); // Просеваем число в стеке
     }
 
-    // Освобождаем память
-    for (unsigned short i = 0; i < N; i++) {
-        free(triangle[i]);
+    // Выводим стек
+    while (stack->head != NULL) {
+        printf("%d ", pop(stack));
     }
-    free(triangle);
+    printf("\n");
+
+    fclose(f);
+    free(path);
+    free(stack);
 
     return 0;
 }
