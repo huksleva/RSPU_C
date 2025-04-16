@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <malloc.h>
+#include <string.h>
 
 typedef struct StackElement {
     struct StackElement *next;
@@ -68,19 +69,44 @@ int main() {
     StackInit(stack);
 
 
-    // Читаем по одному числу
+    // Читаем по одному оператору / операнду
+    char *str = (char*) malloc(100 * sizeof(char));
+    int left, right;
+    do {
+        scanf("%s[^ ]", str);
+        if (*str == '+') {
+            right = pop(stack);
+            left = pop(stack);
+            push(stack, left + right);
+        } else if (*str == '*') {
+            right = pop(stack);
+            left = pop(stack);
+            push(stack, left * right);
+        } else if (*str == '-') {
+            right = pop(stack);
+            left = pop(stack);
+            push(stack, left - right);
+        } else if (*str == '/') {
+            right = pop(stack);
+            left = pop(stack);
+            if (right == 0) {
+                printf("ERROR: Division by zero.\n");
+                free(str);
+                free(stack);
+                return 0;
+            } // Проверка на деление на ноль
+            push(stack, (int) (left / right));
+        } else if (strtol(str, NULL, 10) != 0) {
+            push(stack, (int) strtol(str, NULL, 10));
+        }
+    } while (strlen(str) != 0);
 
+    printf("Result: %d\n", pop(stack));
+    if (stack->head != NULL) {
+        printf("ERROR: Stack is not empty.\n");
+    }
 
-
-
-
-
-
-
-
-
-
-
+    free(str);
     free(stack);
 
     return 0;
