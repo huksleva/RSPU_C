@@ -60,6 +60,16 @@ int pop(Stack *stack) {
     return data;
 }
 
+// Проверка строки на корректность. Состоит ли строка только из десятичных цифр. Проверяем по ASCII
+int isNumber(const char *str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (str[i] < '0' || str[i] > '9') {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 int main() {
     printf("Enter a math example in the form of postfix notation.\nOperands and operations must be written with a space (no more than 100 symbols).\n");
     printf("Example: 2 3 + 4 * 5 -\n>>");
@@ -96,10 +106,16 @@ int main() {
                 return 0;
             } // Проверка на деление на ноль
             push(stack, (int) (left / right));
-        } else if (strtol(str, NULL, 10) != 0) {
+        } else if (isNumber(str)) {
             push(stack, (int) strtol(str, NULL, 10));
         }
-    } while (strlen(str) != 0);
+        else {
+            printf("ERROR: Invalid input.\n");
+            free(str);
+            free(stack);
+            return 0;
+        }
+    } while (getchar() != '\n');
 
     printf("Result: %d\n", pop(stack));
     if (stack->head != NULL) {
