@@ -1,3 +1,0 @@
-C:/Leo/projects/RSPU_C/cmake-build-debug/CMakeFiles/RSPU_C.dir
-C:/Leo/projects/RSPU_C/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Leo/projects/RSPU_C/cmake-build-debug/CMakeFiles/rebuild_cache.dir

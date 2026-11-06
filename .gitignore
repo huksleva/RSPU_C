@@ -1,0 +1,11 @@
+# Build output
+*.o
+*.exe
+cmake-build-*/
+build/
+
+# IDE files
+.idea/
+
+# Editor backups
+*~
